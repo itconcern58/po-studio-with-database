@@ -1,0 +1,12 @@
+.PO-title {
+    padding:2vw;
+    font-size: 4vw;
+    text-align: center;
+}
+
+.po-image {    
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 18%;
+}

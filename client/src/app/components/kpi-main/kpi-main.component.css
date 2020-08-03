@@ -1,0 +1,21 @@
+.kpi-card-style {
+    background-color: #0913a5ec;
+    color: white;
+    font-weight: bold;
+    font-size: large;
+}
+
+.button-kpi-main {
+    margin-left: 2.5px;
+    font-size: 10px;
+    width: 11vw;
+    border-color: floralwhite;
+    border: 2px solid
+}
+
+.kpi-image {    
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 18%;
+}

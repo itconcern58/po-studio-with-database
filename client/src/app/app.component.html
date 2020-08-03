@@ -1,0 +1,21 @@
+
+<mat-card class="card-style"><p>PO-STUDIO</p>
+<mat-divider></mat-divider> 
+<section>
+    <div class="postudio-button-row">
+      <a routerLink="/" routerLinkActive="active"><a mat-raised-button class="button-po-main" target="_blank"><img class="logo" src="./assets/image/home.png" alt="home-image" /></a></a>
+      <a routerLink="/kpi-main" routerLinkActive="active"><a mat-raised-button class="button-po" target="_blank"><img class="logo" src="./assets/image/kpi.png" alt="kpi-image" />KPI Dashboard</a></a>
+      <a routerLink="/virtual-war-room-main" routerLinkActive="active"><a mat-raised-button class="button-po" target="_blank"><img class="logo" src="./assets/image/vwr.png" alt="vwr-image" />Virtual War Room</a></a>
+      <a routerLink="/production-gap-analysis-main" routerLinkActive="active"><a mat-raised-button class="button-po" target="_blank"><img class="logo" src="./assets/image/pga.png" alt="pga-image" />Production Gap Analysis</a></a>
+      <a routerLink="/root-cause-analysis-main" routerLinkActive="active"><a mat-raised-button class="button-po" target="_blank"><img class="logo" src="./assets/image/rca.png" alt="rca-image" />Root Cause Analysis</a></a>
+      <a routerLink="/countermeasure-main" routerLinkActive="active"><a mat-raised-button class="button-po" target="_blank"><img class="logo" src="./assets/image/cm.png" alt="cm-image" />CountMeasure</a></a>
+      <a routerLink="/action-tracker-main" routerLinkActive="active"><a mat-raised-button class="button-po" target="_blank"><img class="logo" src="./assets/image/at.png" alt="at-image" />Action Tracker</a></a>
+      <a routerLink="/progress-monitor-main" routerLinkActive="active"><a mat-raised-button class="button-po" target="_blank"><img class="logo" src="./assets/image/pm.png" alt="pm-image" />Progress Monitor</a></a>
+      <a routerLink="/aggregator-main" routerLinkActive="active"><a mat-raised-button class="button-po" target="_blank"><img class="logo" src="./assets/image/agg.png" alt="agg-image" />Aggregator</a></a>  
+  </div>  
+  </section>
+</mat-card>
+<router-outlet></router-outlet>
+
+<br />
+<mat-slider min="1" max="100" step="1" value="1"></mat-slider>

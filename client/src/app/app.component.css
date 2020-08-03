@@ -1,0 +1,24 @@
+.card-style {
+    background-color: #0913a5ec;
+    color: white;
+    font-weight: bold;
+    font-size: large;
+}
+
+.logo {
+    height: 20px;
+    width: auto;
+    padding-right: 5px;
+}
+.button-po {
+    margin-left: 2.5px;
+    font-size: 9px;
+    width: 11vw;
+}
+
+.button-po-main {
+    margin-left: 2.5px;
+    font-size: 10px;
+    width: 3vw;
+}
+

@@ -1,0 +1,46 @@
+/* You can add global styles to this file, and also import other style files */
+h1 {
+    color: #369;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 250%;
+  }
+  h2, h3 {
+    color: #444;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: lighter;
+  }
+  body {
+    margin: 2em;
+  }
+  body, input[type="text"], button {
+    color: #333;
+    font-family: Cambria, Georgia;
+  }
+  /* everywhere else */
+  * {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.cell-span {
+  background-color: #00e5ff;
+}
+
+.cell-wrap-text {
+  white-space: normal !important;
+}
+
+.ag-header-cell-label .ag-header-cell-text {
+  /* Force the width corresponding at how much width
+  we need once the text is laid out vertically */
+  white-space: normal !important;
+  font-size: 10px;
+}
+.ag-header-cell {
+  background-color: rgba(246, 213, 105, 0.87);
+}
+.ag-row {
+  font-size: 10px !important;
+}
+

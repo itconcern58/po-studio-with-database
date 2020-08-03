@@ -1,0 +1,29 @@
+@import "../node_modules/ag-grid-community/src/styles/ag-grid.scss";
+@import "../node_modules/ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss";
+
+.ag-theme-alpine {
+    @include ag-theme-alpine((
+        odd-row-background-color: #CFD8DC
+    ));
+}
+
+.ag-theme-alpine .ag-cell {
+    border: 1px solid transparent;
+    line-height: 15px;
+    padding-left: 17px;
+    padding-right: 17px;
+}
+
+.ag-theme-alpine .ag-header-cell-label  {
+    text-overflow: clip;
+    overflow: visible;
+    white-space: normal;
+}
+
+.measure-cell {
+    background: green;
+    color:white;
+    border-left: 1px solid lightgrey !important;
+    border-right: 1px solid lightgrey !important;
+    border-bottom: 1px solid lightgrey !important;
+}

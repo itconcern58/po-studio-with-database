@@ -1,0 +1,21 @@
+.vwr-card-style {
+    background-color: #0913a5ec;
+    color: white;
+    font-weight: bold;
+    font-size: large;
+}
+
+.button-vwr-main {
+    margin-left: 2.5px;
+    font-size: 10px;
+    width: 14.5vw;
+    border-color: floralwhite;
+    border: 2px solid
+}
+
+.vwr-image {    
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 18%;
+}
