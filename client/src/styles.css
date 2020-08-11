@@ -38,7 +38,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-size: 10px;
 }
 .ag-header-cell {
-  background-color: rgba(246, 213, 105, 0.87);
+   background-color: rgba(24, 6, 78, 0.87);
+   color: aliceblue;
 }
 .ag-row {
   font-size: 10px !important;

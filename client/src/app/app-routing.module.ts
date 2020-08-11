@@ -11,6 +11,8 @@ import { AggregatorMainComponent } from "./components/aggregator-main/aggregator
 
 import { KpiDashboardComponent } from "./components/pages/kpi-dashboard/kpi-dashboard.component";
 import { KpiDashboardLtOilComponent } from "./components/pages/kpi-dashboard-lt-oil/kpi-dashboard-lt-oil.component";
+import { KpiDashboardStOilComponent } from "./components/pages/kpi-dashboard-st-oil/kpi-dashboard-st-oil.component";
+import { KpiDashboardNglComponent } from "./components/pages/kpi-dashboard-ngl/kpi-dashboard-ngl.component";
 
 import { VirtualWarRoomWellPerfDasboardComponent } from "./components/pages/virtual-war-room-well-perf-dasboard/virtual-war-room-well-perf-dasboard.component";
 import { VirtualWarRoomPotAssSheetComponent } from "./components/pages/virtual-war-room-pot-ass-sheet/virtual-war-room-pot-ass-sheet.component";
@@ -42,6 +44,8 @@ const routes: Routes = [
 
   { path: 'kpi-dashboard', component:KpiDashboardComponent },
   { path: 'kpi-dashboard-lt-oil', component:KpiDashboardLtOilComponent },
+  { path: 'kpi-dashboard-st-oil', component:KpiDashboardStOilComponent },
+  { path: 'kpi-dashboard-ngl', component:KpiDashboardNglComponent },
 
   { path: 'virtual-war-room-wpd', component:VirtualWarRoomWellPerfDasboardComponent },
   { path: 'virtual-war-room-woe', component:VirtualWarRoomWellOperatingEnvelopeComponent },

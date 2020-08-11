@@ -1,8 +1,10 @@
-import { Component, ModuleWithProviders, OnInit } from '@angular/core';
+import { Component, ModuleWithProviders, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { AllModules, Module } from '@ag-grid-enterprise/all-modules';
 import { ModuleRegistry } from "@ag-grid-community/core";
+
+import { cloneDeep } from 'lodash';
 
 ModuleRegistry.registerModules(AllModules);
 
@@ -16,6 +18,8 @@ import { MenuModule } from '@ag-grid-enterprise/menu';
 import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
 import { ColumnsToolPanelModule } from '@ag-grid-enterprise/column-tool-panel';
 import { SetFilterModule } from '@ag-grid-enterprise/set-filter';
+import _ from 'lodash';
+import { Observable } from 'rxjs';
 
 ModuleRegistry.registerModules([ClientSideRowModelModule, GridChartsModule,  RangeSelectionModule, MenuModule, RowGroupingModule, ColumnsToolPanelModule, SetFilterModule ]);
 
@@ -25,6 +29,9 @@ ModuleRegistry.registerModules([ClientSideRowModelModule, GridChartsModule,  Ran
   styleUrls: ['./kpi-dashboard-lt-oil.component.css']
 })
 export class KpiDashboardLtOilComponent implements OnInit {
+  Id:Number;
+  wellArray: any;
+  public selected;
   private gridApi;
   private gridColumnApi;
   public defaultColDef;
@@ -45,138 +52,38 @@ export class KpiDashboardLtOilComponent implements OnInit {
   public headerHeight;
   public sideBar;
   public rowSelection;
-  public well: any[]
+  public well: any;
+  private options: any;
+  
+  prevSelectValue = null;
+  selectedValue = 0;
+  selectedValue1 = 0;
+
+  public dropDownString;
+  public wellValue;
 
   columnDefs = [
-    //{ headerName: 'Month', field:'month', rowGroup:true, enableRowGroup:true, enablePivot:true, hide:true, chartDataType:"category" }, 
-    { headerName: 'Company', field:'company', rowGroup:true, hide:true,
-    enablePivot: true},
-    { headerName: 'Asset', field:'asset', rowGroup:true, enableRowGroup:true, enablePivot:true, hide:true, chartDataType:"series" },
-    { headerName: 'Field', field:'field', rowGroup:true, hide:true, enableRowGroup:true, enablePivot:true},
-    { headerName: 'Reservior', field:'reservoir', rowGroup:true, hide:true, enableRowGroup:true},
-    { headerName: 'Well', field:'well', rowGroup:true, enablePivot:true},
-    { headerName: 'Month', field: 'month',  rowGroup:true, enablePivot:true},
-    { 
-      headerName: 'Plan Oil Prod (bbb/d)', field:'plan_oil', chartDataType:"series", aggFunc: 'sum'  
-    },
-    { 
-      headerName: 'Actual Oil Prod (bbl/d)', field:'actual_oil', aggFunc: 'sum'},
-    { 
-      headerName: 'Plan  Monthly Total (Mbbl)', field:'plan_cumoil', aggFunc: 'sum',
-    valueGetter: function(params) {
-      if
-        (params.data.plan_cumoil = Number(Math.round(parseFloat(params.data.plan_cumoil + 'e' + 1)) + 'e-' + 1)) {
-          return params.data.plan_cumoil
-        }
-    },
-    valueSetter: function(params) {
-      params.data.plan_cumoil = params.newValue;
-      return true;
-    },
-  },
-    { 
-      headerName: 'Actual Monthly Total (Mbbl)', field:'actual_cumoil', 
-      valueGetter: function(params) {
-        if
-          (params.data.actual_cumoil = Number(Math.round(parseFloat(params.data.actual_cumoil + 'e' + 2)) + 'e-' + 2)) {
-            return params.data.actual_cumoil
-          }
-      },
-      valueSetter: function(params) {
-        params.data.actual_cumoil = params.newValue;
-        return true;
-      }, 
-      aggFunc: 'sum' 
-    },
-    { 
-      headerName: 'Plan CAPEX (MM$)', field:'plan_capex', 
-      valueGetter: function(params) {
-        if
-          (params.data.plan_capex = Number(Math.round(parseFloat(params.data.plan_capex + 'e' + 1)) + 'e-' + 1)) {
-            return params.data.plan_capex
-          }
-      },
-      valueSetter: function(params) {
-        params.data.plan_capex = params.newValue;
-        return true;
-      },
-      aggFunc: 'sum'
-    },
-    { 
-      headerName: 'Actual CAPEX (MM$)', field:'actual_capex',
-      valueGetter: function(params) {
-        if
-          (params.data.actual_capex = Number(Number(Math.round(parseFloat(params.data.actual_capex + 'e' + 2)) + 'e-' + 2))) {
-            return (params.data.actual_capex);
-          }
-      },
-      valueSetter: function(params) {
-        params.data.actual_capex = params.newValue;
-        return true;
-      }, 
-       aggFunc: 'sum'
-      
-      },
-    { 
-      headerName: 'Plan OPEX (MM$)', field:'plan_opex',  
-      valueGetter: function(params) {
-        if
-          (params.data.plan_opex = Number(Number(Math.round(parseFloat(params.data.plan_opex + 'e' + 2)) + 'e-' + 2))) {
-            return (params.data.plan_opex);
-          }
-      },
-      valueSetter: function(params) {
-        params.data.plan_opex = params.newValue;
-        return true;
-      },
-      aggFunc: 'sum'
-    },
-    { 
-      headerName: 'Actual OPEX (MM$)', field:'plan_opex',  
-      valueGetter: function(params) {
-        if
-          (params.data.actual_opex = Number(Number(Math.round(parseFloat(params.data.actual_opex + 'e' + 2)) + 'e-' + 2))) {
-            return (params.data.actual_opex);
-          }
-      },
-      valueSetter: function(params) {
-        params.data.actual_opex = params.newValue;
-        return true;
-      },
-      aggFunc: 'sum'
-  },  
-    { 
-      headerName: 'Plan Cash flow (MM$)', field:'plan_cashflow',
-      valueGetter: function(params) {
-        if
-          (params.data.plan_cashflow = Number(Number(Math.round(parseFloat(params.data.plan_cashflow + 'e' + 2)) + 'e-' + 2))) {
-            return (params.data.plan_cashflow);
-          }
-      }, 
-      valueSetter: function(params) {
-        params.data.plan_cashflow = params.newValue;
-        return true;
-      },
-      aggFunc: 'sum'
-    },
-    { 
-      headerName: 'Actual Cash flow (MM$)', field:'actual_cashflow', 
-      valueGetter: function(params) {
-        if
-          (params.data.actual_cashflow = Number(Number(Math.round(parseFloat(params.data.actual_cashflow + 'e' + 2)) + 'e-' + 2))) {
-            return (params.data.actual_cashflow);
-          }
-      }, 
-      valueSetter: function(params) {
-        params.data.actual_cashflow = params.newValue;
-        return true;
-      }, 
-      aggFunc: 'sum'
-    }, 
+
+    { headerName: 'COMP', field:'company', enablePivot:true, rowGroup:true, hide:true },
+    { headerName: 'ASST', field:'asset',  enablePivot:true, rowGroup:true, hide:true },
+    { headerName: 'FLD', field:'field', enablePivot:true, rowGroup:true, hide:true },
+    { headerName: 'RESV', field:'reservoir', enablePivot:true, rowGroup:true, hide:true },
+    { headerName: 'WELL', field:'well', menuTabs: ['filterMenuTab', 'columnsMenuTab'],enablePivot:true, rowGroup:true, hide:true},
+    { headerName: 'MTH', field: 'month', chartDataType: "categories" },
+    { headerName: 'PL OIL (BBL/D)', field: 'plan_oil', chartDataType: "series" },
+    { headerName: 'ACT OIL (BBL/D)', field: 'actual_oil', chartDataType: "series" },
+    { headerName: 'PL CUMOIL (MMBBL)', field: 'plan_cumoil', chartDataType: "series",aggFunc:"sum"},
+    { headerName: 'ACT CUMOIL (MMBBL)', field: 'actual_cumoil', chartDataType: "series", aggFunc:"sum" },
+    { headerName: 'PL CAPEX (MM$)', field: 'plan_capex', chartDataType: "series", aggFunc:"sum" },
+    { headerName: 'ACT CAPEX (MM$)', field: 'actual_capex', chartDataType: "series", aggFunc:"sum" },
+    { headerName: 'PL OPEX (MM$)', field: 'plan_opex', chartDataType: "series" , aggFunc:"sum"},
+    { headerName: 'ACT OPEX (MM$)', field: 'actual_opex', chartDataType: "series" , aggFunc:"sum"},
+    { headerName: 'PL CAFLOW (MM$)',field: 'plan_cashflow', chartDataType: "series", aggFunc:"sum" },
+    { headerName: 'ACT CAFLOW (MM$)', field: 'actual_cashflow', chartDataType: "series", aggFunc:"sum"},   
 ];
 
 constructor( private http: HttpClient ) {
-
+ 
   this.defaultColDef = {
     
     flex: 1,
@@ -191,7 +98,7 @@ constructor( private http: HttpClient ) {
   };
   this.rowHeight = 20;
   this.popupParent = document.body;
-  this.paginationPageSize = 6;
+  this.paginationPageSize = 12;
   this.suppressRowTransform = true;
   this.autoGroupColumnDef = {
     headerName: ' CUSTOM! ',
@@ -204,6 +111,11 @@ constructor( private http: HttpClient ) {
   this.sideBar = 'columns';
   this.headerHeight = 78;
   this.rowSelection = 'multiple';
+}
+
+// Choose city using select dropdown
+changeWell (e) {
+  console.log(e.target.value);
 }
 
 onSelectionChanged($event) {
@@ -237,10 +149,10 @@ onFirstDataRendered(event) {
     var params1 = {
       cellRange: {
         rowStartIndex: 0,
-        rowEndIndex: 4,
-        columns: ['month', 'plan_oil', 'actual_oil'],
+        rowEndIndex: 11,
+        columns: ['month', 'plan_cumoil', 'actual_cumoil', 'plan_cashflow', 'actual_cashflow'],
       },
-      chartType: 'groupedBar',
+      chartType: 'groupedColumn',
       chartContainer: eContainer1,
       processChartOptions: function(params) {
         params.options.seriesDefaults.tooltip.renderer = function(params) {
@@ -271,9 +183,9 @@ onFirstDataRendered(event) {
     var eContainer2 = document.querySelector('#chart2');
     var params2 = {
       cellRange: {
-        columns: ['group', 'well'],
+        columns: ['month', 'plan_cashflow', 'actual_cashflow'],
       },
-      chartType: 'pie',
+      chartType: 'line',
       chartContainer: eContainer2,
       aggFunc: 'sum',
       processChartOptions: function(params) {
@@ -312,7 +224,7 @@ onFirstDataRendered(event) {
     var eContainer3 = document.querySelector('#chart3');
     var params3 = {
       cellRange: {
-        columns: ['month', 'plan_capex', 'actual_capex'],
+        columns: ['month', 'plan_oil', 'actual_oil',],
       },
       chartType: 'line',
       chartContainer: eContainer3,
@@ -353,7 +265,7 @@ onFirstDataRendered(event) {
   }
 }
 getChartToolbarItems(params) {
-  return [];
+  return [ 'chartDownload', 'chartData', 'chartSettings' ];
   }
   
 columnTypes: {
@@ -362,6 +274,7 @@ columnTypes: {
     cellClass: 'number',
     cellRenderer: 'agAnimateShowChangeCellRenderer'
   }
+  
 }
 
 numberCellFormatter(params) {
@@ -380,10 +293,28 @@ onColumnResized(params) {
       .get('http://localhost:8080/api/kpis')
       //.get('./assets/data/kpi/mockdata/mock-work.json')
       .subscribe(data => {
-        this.rowData = data;
-        this.well = this.rowData.well;
-      });
-    }
+      this.rowData = data ;
+      this.well = [];
+      for (var i=0; i<this.rowData.length; i++) {
+        this.well.push(this.rowData[i].well);
+        //this.well = this.rowData[i].well;
+        
+        this.selected = [
+          this.rowData[2]
+        ];
+      //  this.well = [];
+       // this.well.push(this.well);  
+       console.log(this.rowData);
+
+      }
+    });
+    
+  }
+      
+  selectedChangeHandler (event: any) {
+    //Update the well 
+    this.rowData[0].well = event.target.value;
+  }
   
     processChartOptions(params) {
       var opts = params.options;

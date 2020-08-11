@@ -44,6 +44,10 @@ ModuleRegistry.registerModules([ClientSideRowModelModule, GridChartsModule, Rang
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { KpiDashboardLtOilComponent } from './components/pages/kpi-dashboard-lt-oil/kpi-dashboard-lt-oil.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { KpiDashboardStOilComponent } from './components/pages/kpi-dashboard-st-oil/kpi-dashboard-st-oil.component';
+import { KpiDashboardNglComponent } from './components/pages/kpi-dashboard-ngl/kpi-dashboard-ngl.component';
+
 
 @NgModule({
   declarations: [
@@ -71,11 +75,14 @@ import { KpiDashboardLtOilComponent } from './components/pages/kpi-dashboard-lt-
     ProgressMonitorChartComponent,
     AggregatorDashboardComponent,
     WelcomePageComponent,
-    KpiDashboardLtOilComponent
+    KpiDashboardLtOilComponent,
+    KpiDashboardStOilComponent,
+    KpiDashboardNglComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    NgSelectModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,

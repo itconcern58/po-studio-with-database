@@ -5,31 +5,17 @@
           <a routerLink="/kpi-main" routerLinkActive="active"><a mat-raised-button color="primary" class="button-kpi-main" target="_blank">KPI-Main</a></a>
           <a routerLink="/kpi-dashboard" routerLinkActive="active"><a mat-raised-button color="primary" class="button-kpi-main" target="_blank">KPI-Dashboard</a></a>
           <a routerLink="/kpi-dashboard-lt-oil" routerLinkActive="active"><a mat-raised-button color="primary" class="button-kpi-main" target="_blank">KPI-Dashboard-LT-OIL</a></a>
+          <a routerLink="/kpi-dashboard-st-oil" routerLinkActive="active"><a mat-raised-button color="primary" class="button-kpi-main" target="_blank">KPI-Dashboard-ST-OIL</a></a>
+          <a routerLink="/kpi-dashboard-ngl" routerLinkActive="active"><a mat-raised-button color="primary" class="button-kpi-main" target="_blank">KPI-Dashboard-NGL</a></a>
         </div>
     </section>
 </mat-card>
 
 <h1 class="tableHeader">KPI Dashboard Long Term Oil</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
- 
-<div>
-  <label>Well: </label>
-  <select (change)="rowData($event.target.value)">
-    <option value="0">--All--</option>
-    <option *ngFor="let rowDat of rowData" value={{rowDat}}>
-      {{rowDat}}
-    </option>
-  </select>
-</div>
- 
-<p *ngIf="!well"><em>Loading...</em></p>
-
 <div
 style="display: flex; flex-direction: column; height: 100%; width: 100%; overflow: hidden;">
-
 <ag-grid-angular
-  style="width: 100%; height: 30%;"
+  style="width: 90vw; height: 50%; padding:2vw"
   class="ag-theme-alpine"
   [columnDefs]="columnDefs"
   [defaultColDef]="defaultColDef"
@@ -47,11 +33,11 @@ style="display: flex; flex-direction: column; height: 100%; width: 100%; overflo
     [modules]="modules"
   [autoGroupColumnDef]="autoGroupColumnDef"
   [paginationPageSize]="paginationPageSize"
+  [getChartToolbarItems]="getChartToolbarItems"
   [processChartOptions]="processChartOptions"
   [enableRangeSelection]="true"
   [headerHeight]="headerHeight"
   [animateRows]="true"
-  [pivotMode]="true"
   [sideBar]="sideBar"
   [rowData]="rowData"
   [rowSelection]="rowSelection"
@@ -62,8 +48,9 @@ style="display: flex; flex-direction: column; height: 100%; width: 100%; overflo
   (gridReady)="onGridReady($event)"
 >
 </ag-grid-angular>
+
 <div
-        id="chart1"
+      id="chart1"
         style="flex: 1 1 auto; overflow: hidden; height: 30%;"
       ></div>
       <div
