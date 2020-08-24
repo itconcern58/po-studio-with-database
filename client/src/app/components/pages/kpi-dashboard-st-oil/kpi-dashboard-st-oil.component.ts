@@ -64,22 +64,22 @@ export class KpiDashboardStOilComponent implements OnInit {
   
     columnDefs = [
   
-      { headerName: 'COMP', field:'company', enablePivot:true, rowGroup:true, hide:true },
-      { headerName: 'ASST', field:'asset',  enablePivot:true, rowGroup:true, hide:true },
-      { headerName: 'FLD', field:'field', enablePivot:true, rowGroup:true, hide:true },
-      { headerName: 'RESV', field:'reservoir', enablePivot:true, rowGroup:true, hide:true },
-      { headerName: 'WELL', field:'well', menuTabs: ['filterMenuTab', 'columnsMenuTab'],enablePivot:true, rowGroup:true, hide:true},
+      { headerName: 'COMP', field:'company', enablePivot:true },
+      { headerName: 'ASST', field:" Asset",  enablePivot:true },
+      { headerName: 'FLD', field:'fleld', enablePivot:true },
+      { headerName: 'RESV', field:'reservoir', enablePivot:true},
+      { headerName: 'WELL', field:'well', menuTabs: ['filterMenuTab', 'columnsMenuTab'],enablePivot:true},
       { headerName: 'MTH', field: 'month', chartDataType: "categories" },
-      { headerName: 'PL OIL (BBL/D)', field: 'plan_oil', chartDataType: "series" },
-      { headerName: 'ACT OIL (BBL/D)', field: 'actual_oil', chartDataType: "series" },
-      { headerName: 'PL CUMOIL (MMBBL)', field: 'plan_cumoil', chartDataType: "series",aggFunc:"sum"},
-      { headerName: 'ACT CUMOIL (MMBBL)', field: 'actual_cumoil', chartDataType: "series", aggFunc:"sum" },
-      { headerName: 'PL CAPEX (MM$)', field: 'plan_capex', chartDataType: "series", aggFunc:"sum" },
-      { headerName: 'ACT CAPEX (MM$)', field: 'actual_capex', chartDataType: "series", aggFunc:"sum" },
-      { headerName: 'PL OPEX (MM$)', field: 'plan_opex', chartDataType: "series" , aggFunc:"sum"},
-      { headerName: 'ACT OPEX (MM$)', field: 'actual_opex', chartDataType: "series" , aggFunc:"sum"},
-      { headerName: 'PL CAFLOW (MM$)',field: 'plan_cashflow', chartDataType: "series", aggFunc:"sum" },
-      { headerName: 'ACT CAFLOW (MM$)', field: 'actual_cashflow', chartDataType: "series", aggFunc:"sum"},   
+      { headerName: 'PL ST OIL (BBL/D)', field: 'plan_st_oil', chartDataType: "series" },
+      { headerName: 'ACT ST OIL (BBL/D)', field: 'actual_st_oil', chartDataType: "series" },
+      { headerName: 'PL ST CUMOIL (MMBBL)', field: 'plan_st_cumoil', chartDataType: "series"},
+      { headerName: 'ACT ST CUMOIL (MMBBL)', field: 'actual_st_cumoil', chartDataType: "series" },
+      { headerName: 'PL ST CAPEX (MM$)', field: 'plan_st_capex', chartDataType: "series" },
+      { headerName: 'ACT ST CAPEX (MM$)', field: 'actual_st_capex', chartDataType: "series" },
+      { headerName: 'PL ST OPEX (MM$)', field: 'plan_st_opex', chartDataType: "series" },
+      { headerName: 'ACT ST OPEX (MM$)', field: 'actual_st_opex', chartDataType: "series" },
+      { headerName: 'PL ST CAFLOW (MM$)',field: 'plan_st_cashflow', chartDataType: "series" },
+      { headerName: 'ACT ST CAFLOW (MM$)', field: 'actual_st_cashflow', chartDataType: "series" },   
   ];
   
   constructor( private http: HttpClient ) {
@@ -150,7 +150,7 @@ export class KpiDashboardStOilComponent implements OnInit {
         cellRange: {
           rowStartIndex: 0,
           rowEndIndex: 11,
-          columns: ['month', 'plan_cumoil', 'actual_cumoil', 'plan_cashflow', 'actual_cashflow'],
+          columns: ['month', 'plan_st_cumoil', 'actual_st_cumoil', 'plan_st_cashflow', 'actual_st_cashflow'],
         },
         chartType: 'groupedColumn',
         chartContainer: eContainer1,
@@ -183,7 +183,7 @@ export class KpiDashboardStOilComponent implements OnInit {
       var eContainer2 = document.querySelector('#chart2');
       var params2 = {
         cellRange: {
-          columns: ['month', 'plan_cashflow', 'actual_cashflow'],
+          columns: ['month', 'plan_st_cashflow', 'actual_st_cashflow'],
         },
         chartType: 'line',
         chartContainer: eContainer2,
@@ -224,7 +224,7 @@ export class KpiDashboardStOilComponent implements OnInit {
       var eContainer3 = document.querySelector('#chart3');
       var params3 = {
         cellRange: {
-          columns: ['month', 'plan_oil', 'actual_oil',],
+          columns: ['month', 'plan_st_oil', 'actual_st_oil',],
         },
         chartType: 'line',
         chartContainer: eContainer3,
@@ -290,7 +290,7 @@ export class KpiDashboardStOilComponent implements OnInit {
       this.gridColumnApi = params.columnApi;
   
       this.http
-        .get('http://localhost:8080/api/st_kpis')
+        .get('http://localhost:8080/api/kpis')
         //.get('./assets/data/kpi/mockdata/mock-work.json')
         .subscribe(data => {
         this.rowData = data ;

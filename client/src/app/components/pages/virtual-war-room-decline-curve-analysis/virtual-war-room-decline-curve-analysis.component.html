@@ -10,5 +10,58 @@
         </div>
     </section>
 </mat-card>
+<br /><br />
+<h1 style="padding-left:4vw">Decline Curve Analysis</h1>
 
-<h1>Decline Curve Analysis</h1>
+<div
+style="display: flex; flex-direction: column; height: 100%; width: 100%; overflow: hidden;">
+<ag-grid-angular
+  style="width: 90vw; height: 50%; padding:2vw"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [defaultColDef]="defaultColDef"
+  [rowData]="rowData"
+  [rowHeight]="rowHeight"
+  [rowClassRules]="rowClassRules"
+  (columnResized)="onColumnResized($event)"
+  [rowStyle]="rowStyle"
+  [enableRangeSelection]="true"
+  [enableCharts]="true"
+  [getRowHeight]="getRowHeight"
+  [suppressRowTransform]="true"
+  [pagination]="true"
+  [popupParent]="popupParent"
+    [modules]="modules"
+  [autoGroupColumnDef]="autoGroupColumnDef"
+  [paginationPageSize]="paginationPageSize"
+  [getChartToolbarItems]="getChartToolbarItems"
+  [processChartOptions]="processChartOptions"
+  [enableRangeSelection]="true"
+  [headerHeight]="headerHeight"
+  [animateRows]="true"
+  [sideBar]="sideBar"
+  [rowData]="rowData"
+  [rowSelection]="rowSelection"
+  [rowMultiSelectWithClick]="true"
+  [getChartToolbarItems]="getChartToolbarItems"
+  (firstDataRendered)="onFirstDataRendered($event)"
+  (gridReady)="onGridReady($event)"
+>
+</ag-grid-angular>
+<div
+    id="chart1"
+      style="flex: 1 1 auto; overflow: hidden; height: 50%;"
+    ></div>
+    <div
+      style="display: flex; flex: 1 1 auto; overflow: hidden; height: 30%;"
+    >
+      <div
+        id="chart2"
+        style="flex: 1 1 auto; overflow: hidden; width: 50%;"
+      ></div>
+      <div
+        id="chart3"
+        style="flex: 1 1 auto; overflow: hidden; width: 50%;"
+      ></div>
+  </div>
+</div>

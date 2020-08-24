@@ -26,6 +26,9 @@ ModuleRegistry.registerModules([ClientSideRowModelModule, GridChartsModule,  Ran
   styleUrls: ['./kpi-dashboard.component.css']
 })
 export class KpiDashboardComponent implements OnInit {
+  Id:Number;
+  wellArray: any;
+  public selected;
   private gridApi;
   private gridColumnApi;
   public defaultColDef;
@@ -44,30 +47,26 @@ export class KpiDashboardComponent implements OnInit {
   public modules: Module [] = [ClientSideRowModelModule, RangeSelectionModule, GridChartsModule, MenuModule, RowGroupingModule, ColumnsToolPanelModule, SetFilterModule];
   public autoGroupColumnDef;
   public headerHeight;
+  public sideBar;
+  public rowSelection;
+  public well: any;
+  private options: any;
+  
+  prevSelectValue = null;
+  selectedValue = 0;
+  selectedValue1 = 0;
 
+  public dropDownString;
+  public wellValue;
+  
   columnDefs = [
-    /*{ headerName: 'Company', field: 'company', resizable:true, hide: true, 'minWidth':40, editable:true, rowGroup: true,},
-    { headerName: 'Asset-1', field: 'asset-1', resizable:true, hide: true, 'minWidth':40, editable:true, rowGroup: true },
-    { headerName: 'Asset-1', field: 'asset-2', resizable:true, hide: true, 'minWidth':40, editable:true, rowGroup: true },
-    { headerName: 'Fld-ABAC', field: 'fld-abac', resizable:true, hide: true, 'minWidth':40, editable:true, rowGroup: true },
-    { headerName: 'Fld-ADAE', field: 'fld-adae', resizable:true, hide: true, 'minWidth':40, editable:true, rowGroup: true },
-    { headerName: 'Fld-AFAG', field: 'fld-afag', resizable:true, hide: true, 'minWidth':40, editable:true, rowGroup: true },
-    { headerName: 'Fld-AHAI', field: 'fld-ahai', resizable:true, hide: true, 'minWidth':40, editable:true, rowGroup: true },
-    { headerName: 'Res-AB', field: 'res-AB', resizable:true, hide: true, 'minWidth':40, editable:true, rowGroup: true },
-    { headerName: 'Res-AC', field: 'res-AC', resizable:true, hide: true, 'minWidth':40, editable:true, rowGroup: true },
-    { headerName: 'Res-AD', field: 'res-ad', resizable:true, hide:true,'minWidth':40, editable:true},
-    { headerName: 'Res-AE', field: 'res-ae', resizable:true, hide:true,'minWidth':40, editable:true},
-    { headerName: 'Res-AF', field: 'res-af', resizable:true, hide:true,'minWidth':40, editable:true},
-    { headerName: 'Res-AG', field: 'res-ag', resizable:true, hide:true,'minWidth':40, editable:true},
-    { headerName: 'Res-AH', field: 'res-ah', resizable:true, hide:true,'minWidth':40, editable:true},
-    { headerName: 'Res-AI', field: 'res-ai', resizable:true, hide:true,'minWidth':40, editable:true},*/
-    
-    { headerName: 'Company', field:'company', rowGroup:true, hide:true},
-    { headerName: 'Asset', field:'asset', rowGroup:true, hide:true},
-    { headerName: 'Field', field:'field', rowGroup:true, hide:true},
-    { headerName: 'Reservior', field:'reservoir', rowGroup:true, hide:true},
-    { headerName: 'Well', field:'well', hide:false },
-    { headerName: 'Date', field:'date' },
+     
+    { headerName: 'Company', field:'company', hide:true},
+    { headerName: 'Asset', field:'asset' },
+    { headerName: 'Field', field:'field' },
+    { headerName: 'Reservior', field:'reservoir' },
+    { headerName: 'Well', field:'well' },
+    { headerName: 'MTH', field:'month' },
     { headerName: 'Pln-Oil', field:'plan_oil', aggFunc: 'sum', hide:false },
     { headerName: 'Act-Oil', field:'actual_oil', aggFunc: 'sum', hide:false},
     { headerName: 'Pln-Gas', field:'plan_gas',  aggFunc: 'sum', hide:false},
@@ -83,175 +82,36 @@ export class KpiDashboardComponent implements OnInit {
     { headerName: 'Pln-CumNgl', field:'plan_cumngl', aggFunc: 'sum', hide:false },
     { headerName: 'Act-CumNgl', field:'actual_cumngl', aggFunc: 'sum', hide:false },
 
-    { headerName: 'Pln-Cumboe', field:'plan_cumboe', aggFunc: 'sum', hide:false },
-    { headerName: 'Act-Cumboe', field:'actual_cumboe', aggFunc: 'sum', hide:false },
+    { headerName: 'Pln-Cumboe', field:'plan_cumboe', aggFunc: 'sum', hide:true },
+    { headerName: 'Act-Cumboe', field:'actual_cumboe', aggFunc: 'sum', hide:true },
 
-    { headerName: 'Pln-ST-OIL', field:'short_term_plan_oil',  aggFunc: 'sum', hide:false},
-    { headerName: 'Act-ST-OIL', field:'short_term_actual_oil',  aggFunc: 'sum', hide:false},
-    { headerName: 'Pln-ST-GAS', field:'short_term_plan_gas', hide:false,  aggFunc: 'sum' },
-    { headerName: 'Act-ST-GAS', field:'short_term_actual_gas', hide:false,  aggFunc: 'sum' },
-    { headerName: 'Pln-ST-NGL', field:'short_term_plan_ngl', hide:false,  aggFunc: 'sum'},
-    { headerName: 'Act-ST-NGL', field:'short_term_actual_ngl', hide:false,  aggFunc: 'sum' },
-    { headerName: 'Pln-ST-CumOIL', field:'short_term_plan_cumoil',  aggFunc: 'sum', hide:false},
-    { headerName: 'Act-ST-CumOIL', field:'short_term_actual_cumoil',  aggFunc: 'sum', hide:false},
-    { headerName: 'Pln-ST-CumGAS', field:'short_term_cumgas', hide:false,  aggFunc: 'sum' },
-    { headerName: 'Act-ST-CumGAS', field:'short_term_actual_cumgas', hide:false,  aggFunc: 'sum' },
-    { headerName: 'Pln-ST-CumNGL', field:'short_term_plan_cumngl', hide:false,  aggFunc: 'sum'},
-    { headerName: 'Act-ST-CumNGL', field:'short_term_actual_cumngl', hide:false,  aggFunc: 'sum' },
-    { headerName: 'Pln-ST-CumBoe', field:'short_term_plan_cumboe', hide:false,  aggFunc: 'sum'},
-    { headerName: 'Act-ST-CumBoe', field:'short_term_actual_cumboe', hide:false,  aggFunc: 'sum' },
-    { headerName: 'Pln-CAPX', field:'plan_capex',  aggFunc: 'sum'},
-    { headerName: 'Act-CAPX', field:'actual_capex',  aggFunc: 'sum'},
-    { headerName: 'Pln-OPX', field:'plan_opex',  aggFunc: 'sum'},
-    { headerName: 'Act-OPX', field:'plan_opex',  aggFunc: 'sum'},  
-    { headerName: 'Pln-CASH', field:'plan_cashflow',  aggFunc: 'sum'},
-    { headerName: 'Act-CASH', field:'actual_cashflow',  aggFunc: 'sum'},
-    { headerName: 'PlnST-CAPX', field:'short_term_plan_capex', hide:false,  aggFunc: 'sum' },
-    { headerName: 'ActST-CAPX', field:'short_term_actual_capex', hide:false,  aggFunc: 'sum' },
-    { headerName: 'PlnST-OPX', field:'short_term_plan_opex', hide:false,  aggFunc: 'sum' },
-    { headerName: 'ActST-OPX', field:'short_term_actual_opex', hide:false,  aggFunc: 'sum' },
-    { headerName: 'PlnST-CASH', field:'short_term_plan_cashflow', hide:false,  aggFunc: 'sum' },
-    { headerName: 'ActST-CASH', field:'short_term_actual_cashflow', hide:false,  aggFunc: 'sum' }
+    { headerName: 'Pln-ST-OIL', field:'plan_st_oil' },
+    { headerName: 'Act-ST-OIL', field:'actual_st_oil' },
+    { headerName: 'Pln-ST-GAS', field:'short_term_plan_gas', hide:true,  aggFunc: 'sum' },
+    { headerName: 'Act-ST-GAS', field:'short_term_actual_gas', hide:true,  aggFunc: 'sum' },
+    { headerName: 'Pln-ST-NGL', field:'short_term_plan_ngl', hide:true,  aggFunc: 'sum'},
+    { headerName: 'Act-ST-NGL', field:'short_term_actual_ngl', hide:true,  aggFunc: 'sum' },
+    { headerName: 'Pln-ST-CumOIL', field:'plan_st_cumoil',  aggFunc: 'sum', hide:false},
+    { headerName: 'Act-ST-CumOIL', field:'actual_st_cumoil',  aggFunc: 'sum', hide:false},
+    { headerName: 'Pln-ST-CumGAS', field:'short_term_cumgas', hide:true,  aggFunc: 'sum' },
+    { headerName: 'Act-ST-CumGAS', field:'short_term_actual_cumgas', hide:true,  aggFunc: 'sum' },
+    { headerName: 'Pln-ST-CumNGL', field:'short_term_plan_cumngl', hide:true,  aggFunc: 'sum'},
+    { headerName: 'Act-ST-CumNGL', field:'short_term_actual_cumngl', hide:true,  aggFunc: 'sum' },
+    { headerName: 'Pln-ST-CumBoe', field:'short_term_plan_cumboe', hide:true,  aggFunc: 'sum'},
+    { headerName: 'Act-ST-CumBoe', field:'actual_st_cumboe', hide:true },
+    { headerName: 'Pln-CAPX', field:'plan_capex'},
+    { headerName: 'Act-CAPX', field:'actual_capex'},
+    { headerName: 'Pln-OPX', field:'plan_opex'},
+    { headerName: 'Act-OPX', field:'actual_opex'},  
+    { headerName: 'Pln-CASH', field:'plan_cashflow'},
+    { headerName: 'Act-CASH', field:'actual_cashflow'},
+    { headerName: 'PlnST-CAPX', field:'plan_st_capex' },
+    { headerName: 'ActST-CAPX', field:'actual_st_capex' },
+    { headerName: 'PlnST-OPX', field:'plan__st_opex' },
+    { headerName: 'ActST-OPX', field:'actual_st_opex'},
+    { headerName: 'PlnST-CASH', field:'plan_st_cashflow' },
+    { headerName: 'ActST-CASH', field:'actual_st_casflow' }
   
-
-    /*{ 
-      headerName: 'WellAB-1', field: 'ab-1', resizable:true, hide:true, 'minWidth':40, editable:true,
-      children:[
-        { headerName: 'Date', field: 'plan_ytd', resizable:true, 'minWidth':40, editable:true, chartDataType: 'category' }, 
-        { headerName: 'Oil (Kbbl/d)', resizable:true, 'minWidth':60, editable:true,  
-          children: [
-            { headerName: 'Plan', field: 'plan_oil_rate', chartType:'series' },
-            { headerName: 'Act.', field: 'actual_oil_rate', chartType:'series'  },
-          ]
-        },
-    { 
-      headerName: 'Gas (MMscf/d)', resizable:true,  editable:true, 
-      children: [
-         { 
-            headerName: 'Plan', field: 'plan_gas_rate', 'minWidth':60, chartType:'series',
-            valueGetter: function(params) {
-            return (800*(params.data.plan_oil_rate)/1000).toFixed(1);
-          },
-          valueSetter: function(params) {
-            params.data.plan_gas_rate = params.newValue;
-            return true;
-          },
-        },
-        { 
-            headerName: 'Act.', field: 'actual_gas_rate', 'width':60, chartType:'series', 
-            valueGetter: function(params) {
-              let numboe = (800*(params.data.actual_oil_rate)/1000).toFixed(1);
-            return numboe;
-            },
-            valueSetter: function(params) {
-              params.data.actual_gas_rate = params.newValue;
-              return true;
-            },
-          },
-        ],
-      },
-      { 
-        headerName: 'BOE (boed)', resizable:true, 'minWidth':60, editable:true, 
-        children: [
-          { 
-        
-            headerName: 'Plan', field: 'plan_boe_rate',
-            valueGetter: function(params) {
-              return (params.data.plan_oil_rate + (params.data.plan_oil_rate*800)/5658.3).toFixed(1);
-            }
-          },
-          { headerName: 'Act.', field: 'actual_boe_rate',
-          valueGetter: function(params) {
-            return (params.data.actual_oil_rate + (params.data.actual_oil_rate*800)/5658.3).toFixed(1);
-          }
-         },
-        ]
-      },
-      { 
-        headerName: 'CAPEX ($K)', resizable:true, 'minWidth':60, editable:true, 
-        children: [
-          { headerName: 'Plan', field: 'plan_capex' },
-          { headerName: 'Act.', field: 'actual_capex' },
-        ]
-      },
-      { 
-        headerName: 'OPEX ($K)', resizable:true, 'minWidth':60, editable:true, 
-        children: [
-          { headerName: 'Plan', field: 'plan_opex' },
-          { headerName: 'Act.', field: 'actual_opex' },
-        ]
-      },
-      { 
-        headerName: 'CumBOE', resizable:true, 'minWidth':60, editable:true, 
-        children: [
-          { 
-            headerName: 'Plan', field: 'plan_cumboe', chartDataType: 'series',
-            
-            valueGetter: function(params) {
-              var plan_cumboe = params.data.plan_oil_rate + (params.data.plan_oil_rate*800)/5658.3;
-              return ((plan_cumboe*365/12)/1000).toFixed(1);
-            }
-         
-        },
-          { 
-            headerName: 'Act.', field: 'actual_cumboe', chartDataType: 'series',
-            valueFormatter: this.numberCellFormatter,
-            valueGetter: function(params) {
-              var actual_cumboe = params.data.actual_oil_rate + (params.data.actual_oil_rate*800)/5658.3;
-              return ((actual_cumboe*365/12)/1000).toFixed(1);
-            }
-         
-         },
-        ]
-      },
-      { 
-        headerName: 'PV', resizable:true, 'minWidth':60, editable:true, 
-        children: [
-          { 
-            headerName: 'Plan', field: 'plan_pv', 
-            valueGetter: function(params) {
-              var plan_cumboe = params.data.plan_oil_rate + (params.data.plan_oil_rate*800)/5658.3;
-              return (((plan_cumboe*45*365/12)/1000)/(params.data.plan_capex + params.data.plan_opex)).toFixed(1);
-            }
-          },
-          { headerName: 'Act.', field: 'actual_pv',
-          valueGetter: function(params) {
-            var actual_cumboe = params.data.actual_oil_rate + (params.data.actual_oil_rate*800)/5658.3;
-            return (((actual_cumboe*45*365/12)/1000)/(params.data.actual_capex + params.data.actual_opex)).toFixed(1);
-          }
-        },
-        ]
-      }
-    ] 
-    },
-    { headerName: 'WellAB-2', field: 'ab-2', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAB-3', field: 'ab-3', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAB-4', field: 'ab-4', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAC-1', field: 'ac-1', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAC-1', field: 'ac-2', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAC-3', field: 'ac-3', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAB-1', field: 'ad-1', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAD-2', field: 'ad-2', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAB-3', field: 'ad-3', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAD-4', field: 'ad-4', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAD-5', field: 'ad-5', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAE-1', field: 'ae-1', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAE-2', field: 'ae-2', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAE-3', field: 'ae-3', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAF-1', field: 'af-1', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAF-2', field: 'af-2', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAF-3', field: 'af-3', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAG-1', field: 'ag-1', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAG-2', field: 'ag-2', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAG-3', field: 'ag-3', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAH-1', field: 'ah-1', resizable:true, hide:true,'minWidth':40, editable:true},
-    { headerName: 'WellAH-2', field: 'ah-2', resizable:true, hide:true,'minWidth':40, editable:true},
-    { headerName: 'WellAH-3', field: 'ah-3', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAI-1', field: 'ai-1', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAI-2', field: 'ai-2', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAI-3', field: 'ah-3', resizable:true, hide:true, 'minWidth':40, editable:true},
-    { headerName: 'WellAI-4', field: 'ah-4', resizable:true, hide:true, 'minWidth':40, editable:true},
-    */
 ];
 
 constructor( private http: HttpClient ) {
@@ -265,36 +125,188 @@ constructor( private http: HttpClient ) {
     resizable: true,
     enableCharts: true,
     enableRangeSelection: true,
-    editable:true
+    editable:true,
+    filter: true,
   };
   this.rowHeight = 20;
   this.popupParent = document.body;
-  this.paginationPageSize = 14;
+  this.paginationPageSize = 12;
   this.suppressRowTransform = true;
-  this.autoGroupColumnDef = { minWidth: 200 };
-  this.headerHeight = 58;
+  this.autoGroupColumnDef = {
+    headerName: ' CUSTOM! ',
+    minWidth: 270,
+    cellRendererParams: {
+      suppressCount: true,
+      checkbox: true,
+    },
+  },
+  this.sideBar = 'columns';
+  this.headerHeight = 78;
+  this.rowSelection = 'multiple';
 }
 
-onFirstDataRendered(params) {
-  var cellRange = {
-    rowStartIndex: 0,
-    rowEndIndex: 11,
-    columns: ['plan_ytd', 'plan_capex', 'actual_capex', 'plan_oil_rate', 'actual_oil_rate'],
-  };
-
-  var createRangeChartParams = {
-    cellRange: cellRange,
-    chartType: 'line',
-  };
-//  params.api.createRangeChart(createRangeChartParams);
+// Choose city using select dropdown
+changeWell (e) {
+  console.log(e.target.value);
 }
 
+onSelectionChanged($event) {
+  var selectedRows = this.gridApi.getSelectedRows();
+  var selectedRowsString = '';
+  var maxToShow = 5;
+  selectedRows.forEach(function(selectedRow, index) {
+    if (index >= maxToShow) {
+      return;
+    }
+    if (index > 0) {
+      selectedRowsString += ', ';
+    }
+    selectedRowsString += selectedRow.well;
+  });
+  if (selectedRows.length > maxToShow) {
+    var othersCount = selectedRows.length - maxToShow;
+    selectedRowsString +=
+      ' and ' + othersCount + ' other' + (othersCount !== 1 ? 's' : '');
+  }
+  document.querySelector('#selectedRows').innerHTML = selectedRowsString;
+}
+
+numberFormatter(params) {
+  return Number(params.newValue).toFixed(2);
+}
+
+onFirstDataRendered(event) {
+  {
+    var eContainer1 = document.querySelector('#chart1');
+    var params1 = {
+      cellRange: {
+        rowStartIndex: 0,
+        rowEndIndex: 11,
+        columns: ['month', 'plan_cumoil', 'actual_cumoil', 'plan_st_oil', 'actual_st_oil'],
+      },
+      chartType: 'groupedColumn',
+      chartContainer: eContainer1,
+      processChartOptions: function(params) {
+        params.options.seriesDefaults.tooltip.renderer = function(params) {
+          var titleStyle = params.color
+            ? ' style="color: white; background-color:' + params.color + '"'
+            : '';
+          var title = params.title
+            ? '<div class="ag-chart-tooltip-title"' +
+              titleStyle +
+              '>' +
+              params.title +
+              '</div>'
+            : '';
+          var value = params.datum[params.yKey]
+            .toString()
+            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+          return (
+            title +
+            '<div class="ag-chart-tooltip-content" style="text-align: center">' +
+            value +
+            '</div>'
+          );
+        };
+        return params.options;
+      },
+    };
+    event.api.createRangeChart(params1);
+    var eContainer2 = document.querySelector('#chart2');
+    var params2 = {
+      cellRange: {
+        columns: ['month', 'plan_cashflow', 'actual_cashflow'],
+      },
+      chartType: 'line',
+      chartContainer: eContainer2,
+      aggFunc: 'sum',
+      processChartOptions: function(params) {
+        params.options.legend.position = 'bottom';
+        params.options.padding = {
+          top: 20,
+          left: 10,
+          bottom: 30,
+          right: 10,
+        };
+        params.options.seriesDefaults.tooltip.renderer = function(params) {
+          var titleStyle = params.color
+            ? ' style="color: white; background-color:' + params.color + '"'
+            : '';
+          var title = params.title
+            ? '<div class="ag-chart-tooltip-title"' +
+              titleStyle +
+              '>' +
+              params.title +
+              '</div>'
+            : '';
+          var value = params.datum[params.angleKey]
+            .toString()
+            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+          return (
+            title +
+            '<div class="ag-chart-tooltip-content" style="text-align: center">' +
+            value +
+            '</div>'
+          );
+        };
+        return params.options;
+      },
+    };
+    event.api.createRangeChart(params2);
+    var eContainer3 = document.querySelector('#chart3');
+    var params3 = {
+      cellRange: {
+        columns: ['month', 'plan_oil', 'actual_oil',],
+      },
+      chartType: 'line',
+      chartContainer: eContainer3,
+      aggFunc: 'sum',
+      processChartOptions: function(params) {
+        params.options.legend.position = 'bottom';
+        params.options.padding = {
+          top: 20,
+          left: 10,
+          bottom: 30,
+          right: 10,
+        };
+        params.options.seriesDefaults.tooltip.renderer = function(params) {
+          var titleStyle = params.color
+            ? ' style="color: white; background-color:' + params.color + '"'
+            : '';
+          var title = params.title
+            ? '<div class="ag-chart-tooltip-title"' +
+              titleStyle +
+              '>' +
+              params.title +
+              '</div>'
+            : '';
+          var value = params.datum[params.angleKey]
+            .toString()
+            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+          return (
+            title +
+            '<div class="ag-chart-tooltip-content" style="text-align: center">' +
+            value +
+            '</div>'
+          );
+        };
+        return params.options;
+      },
+    };
+    event.api.createRangeChart(params3);
+  }
+}
+getChartToolbarItems(params) {
+  return [ 'chartDownload', 'chartData', 'chartSettings' ];
+  }
+  
 columnTypes: {
     actual_cumboe: {
     chartDataType: 'series',
     cellClass: 'number',
     cellRenderer: 'agAnimateShowChangeCellRenderer'
   }
+  
 }
 
 numberCellFormatter(params) {
@@ -310,17 +322,36 @@ onColumnResized(params) {
     this.gridColumnApi = params.columnApi;
 
     this.http
-     // .get('./assets/data/kpi/mockdata/kpi-dashboard.json')
-      .get('./assets/data/kpi/mockdata/mock-work.json')
+      .get('http://localhost:8080/api/kpis')
+      //.get('./assets/data/kpi/mockdata/mock-work.json')
       .subscribe(data => {
-        this.rowData = data;
-      });
-    }
+      this.rowData = data ;
+      this.well = [];
+      for (var i=0; i<this.rowData.length; i++) {
+        this.well.push(this.rowData[i].well);
+        //this.well = this.rowData[i].well;
+        
+        this.selected = [
+          this.rowData[2]
+        ];
+      //  this.well = [];
+       // this.well.push(this.well);  
+       console.log(this.rowData);
 
+      }
+    });
+    
+  }
+      
+  selectedChangeHandler (event: any) {
+    //Update the well 
+    this.rowData[0].well = event.target.value;
+  }
+  
     processChartOptions(params) {
       var opts = params.options;
       opts.title.enabled = true;
-      opts.title.text = 'Medals by Age';
+      opts.title.text = 'Comparison Chart';
       opts.legend.position = 'bottom';
       opts.seriesDefaults.tooltip.renderer = function(params) {
         var titleStyle = params.color
@@ -355,4 +386,5 @@ onColumnResized(params) {
     ngOnInit() {
     
   }
+
 }

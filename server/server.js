@@ -38,6 +38,8 @@ app.get("/", (req, res) => {
 
 require("./app/routes/kpi.routes")(app);
 require("./app/routes/st_kpi.routes")(app);
+require("./app/routes/oil_prd.routes")(app);
+//require("./app/routes/oil_fore.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

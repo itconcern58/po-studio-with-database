@@ -1,0 +1,70 @@
+
+<mat-card class="kpi-card-style">
+    <section>
+        <div class="postudio-button-row">
+          <a routerLink="/kpi-main" routerLinkActive="active"><a mat-raised-button color="primary" class="button-kpi-main" target="_blank">KPI-Main</a></a>
+          <a routerLink="/kpi-dashboard" routerLinkActive="active"><a mat-raised-button color="primary" class="button-kpi-main" target="_blank">KPI-Dashboard</a></a>
+          <a routerLink="/kpi-dashboard-lt-oil" routerLinkActive="active"><a mat-raised-button color="primary" class="button-kpi-main" target="_blank">KPI-Dashboard-LT-OIL</a></a>
+          <a routerLink="/kpi-dashboard-st-oil" routerLinkActive="active"><a mat-raised-button color="primary" class="button-kpi-main" target="_blank">KPI-Dashboard-ST-OIL</a></a>
+          <a routerLink="/kpi-dashboard-ngl" routerLinkActive="active"><a mat-raised-button color="primary" class="button-kpi-main" target="_blank">KPI-Dashboard-NGL</a></a>
+          <a routerLink="/kpi-dashboard-gas" routerLinkActive="active"><a mat-raised-button color="primary" class="button-kpi-main" target="_blank">KPI-Dashboard-GAS</a></a>     
+        </div>
+    </section>
+</mat-card>
+
+<h1 class="tableHeader">KPI Dashboard Long Term Gas</h1>
+<div
+style="display: flex; flex-direction: column; height: 100%; width: 100%; overflow: hidden;">
+<ag-grid-angular
+  style="width: 90vw; height: 50%; padding:2vw"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [defaultColDef]="defaultColDef"
+  [rowData]="rowData"
+  [rowHeight]="rowHeight"
+  [rowClassRules]="rowClassRules"
+  (columnResized)="onColumnResized($event)"
+  [rowStyle]="rowStyle"
+  [enableRangeSelection]="true"
+  [enableCharts]="true"
+  [getRowHeight]="getRowHeight"
+  [suppressRowTransform]="true"
+  [pagination]="true"
+  [popupParent]="popupParent"
+    [modules]="modules"
+  [autoGroupColumnDef]="autoGroupColumnDef"
+  [paginationPageSize]="paginationPageSize"
+  [getChartToolbarItems]="getChartToolbarItems"
+  [processChartOptions]="processChartOptions"
+  [enableRangeSelection]="true"
+  [headerHeight]="headerHeight"
+  [animateRows]="true"
+  [sideBar]="sideBar"
+  [rowData]="rowData"
+  [rowSelection]="rowSelection"
+  [rowMultiSelectWithClick]="true"
+  [getChartToolbarItems]="getChartToolbarItems"
+  (selectionChanged)="onSelectionChanged($event)"
+  (firstDataRendered)="onFirstDataRendered($event)"
+  (gridReady)="onGridReady($event)"
+>
+</ag-grid-angular>
+
+<div
+      id="chart1"
+        style="flex: 1 1 auto; overflow: hidden; height: 30%;"
+      ></div>
+      <div
+        style="display: flex; flex: 1 1 auto; overflow: hidden; height: 30%;"
+      >
+        <div
+          id="chart2"
+          style="flex: 1 1 auto; overflow: hidden; width: 50%;"
+        ></div>
+        <div
+          id="chart3"
+          style="flex: 1 1 auto; overflow: hidden; width: 50%;"
+        ></div>
+      </div>
+    </div>
+

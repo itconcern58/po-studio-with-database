@@ -47,7 +47,10 @@ import { KpiDashboardLtOilComponent } from './components/pages/kpi-dashboard-lt-
 import { NgSelectModule } from '@ng-select/ng-select';
 import { KpiDashboardStOilComponent } from './components/pages/kpi-dashboard-st-oil/kpi-dashboard-st-oil.component';
 import { KpiDashboardNglComponent } from './components/pages/kpi-dashboard-ngl/kpi-dashboard-ngl.component';
-
+import { DcaProdService } from './services/dca-prod.service';
+import { ProdsService } from './services/prods.service';
+import { RegressionComponent } from './common/regression/regression.component';
+import { KpiDashboardLtGasComponent } from './components/pages/kpi-dashboard-lt-gas/kpi-dashboard-lt-gas.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +80,9 @@ import { KpiDashboardNglComponent } from './components/pages/kpi-dashboard-ngl/k
     WelcomePageComponent,
     KpiDashboardLtOilComponent,
     KpiDashboardStOilComponent,
-    KpiDashboardNglComponent
+    KpiDashboardNglComponent,
+    RegressionComponent,
+    KpiDashboardLtGasComponent
   ],
   imports: [
     BrowserModule,
@@ -93,7 +98,7 @@ import { KpiDashboardNglComponent } from './components/pages/kpi-dashboard-ngl/k
     MatSelectModule,
     AgGridModule.withComponents([])
   ],
-  providers: [HttpClient],
+  providers: [HttpClient, DcaProdService, ProdsService, RegressionComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -64,11 +64,11 @@ export class KpiDashboardLtOilComponent implements OnInit {
 
   columnDefs = [
 
-    { headerName: 'COMP', field:'company', enablePivot:true, rowGroup:true, hide:true },
-    { headerName: 'ASST', field:'asset',  enablePivot:true, rowGroup:true, hide:true },
-    { headerName: 'FLD', field:'field', enablePivot:true, rowGroup:true, hide:true },
-    { headerName: 'RESV', field:'reservoir', enablePivot:true, rowGroup:true, hide:true },
-    { headerName: 'WELL', field:'well', menuTabs: ['filterMenuTab', 'columnsMenuTab'],enablePivot:true, rowGroup:true, hide:true},
+    { headerName: 'COMP', field:'company', hide:true },
+    { headerName: 'ASST', field:'asset',  hide:true },
+    { headerName: 'FLD', field:'field', hide: true },
+    { headerName: 'RESV', field:'reservoir', hide:true },
+    { headerName: 'WELL', field:'well' },
     { headerName: 'MTH', field: 'month', chartDataType: "categories" },
     { headerName: 'PL OIL (BBL/D)', field: 'plan_oil', chartDataType: "series" },
     { headerName: 'ACT OIL (BBL/D)', field: 'actual_oil', chartDataType: "series" },
@@ -79,7 +79,8 @@ export class KpiDashboardLtOilComponent implements OnInit {
     { headerName: 'PL OPEX (MM$)', field: 'plan_opex', chartDataType: "series" , aggFunc:"sum"},
     { headerName: 'ACT OPEX (MM$)', field: 'actual_opex', chartDataType: "series" , aggFunc:"sum"},
     { headerName: 'PL CAFLOW (MM$)',field: 'plan_cashflow', chartDataType: "series", aggFunc:"sum" },
-    { headerName: 'ACT CAFLOW (MM$)', field: 'actual_cashflow', chartDataType: "series", aggFunc:"sum"},   
+    { headerName: 'ACT CAFLOW (MM$)', field: 'actual_cashflow', chartDataType: "series", aggFunc:"sum"},
+       
 ];
 
 constructor( private http: HttpClient ) {
@@ -185,6 +186,7 @@ onFirstDataRendered(event) {
       cellRange: {
         columns: ['month', 'plan_cashflow', 'actual_cashflow'],
       },
+  
       chartType: 'line',
       chartContainer: eContainer2,
       aggFunc: 'sum',
@@ -304,17 +306,23 @@ onColumnResized(params) {
         ];
       //  this.well = [];
        // this.well.push(this.well);  
-       console.log(this.rowData);
+       console.log(this.selected);
 
       }
     });
     
   }
+
       
   selectedChangeHandler (event: any) {
     //Update the well 
-    this.rowData[0].well = event.target.value;
+  this.rowData[0].well = event.target.value;
   }
+
+  processResult() {
+    console.log(this.rowData[0].well);
+  }
+
   
     processChartOptions(params) {
       var opts = params.options;

@@ -69,29 +69,29 @@ export class KpiDashboardNglComponent implements OnInit {
     { headerName: 'ASST', field:'asset',  enablePivot:true, hide:true },
     { headerName: 'FLD', field:'field', enablePivot:true, hide:true },
     { headerName: 'RESV', field:'reservoir', enablePivot:true, hide:true },
-    { headerName: 'WELL', field:'well', menuTabs: ['filterMenuTab', 'columnsMenuTab'],enablePivot:true, hide:true},
+    { headerName: 'WELL', field:'well', menuTabs: ['filterMenuTab', 'columnsMenuTab'],enablePivot:true},
     { headerName: 'MTH', field: 'month', chartDataType: "categories" },
-    { headerName: 'PL NGL (BBL/D)', field: 'plan_oil', chartDataType: "series" },
-    { headerName: 'ACT NGL (BBL/D)', field: 'actual_oil', chartDataType: "series" },
-    { headerName: 'PL CUMNGL (MMBBL)', field: 'plan_cumoil', chartDataType: "series",aggFunc:"sum"},
-    { headerName: 'ACT CUMNGL (MMBBL)', field: 'actual_cumoil', chartDataType: "series", aggFunc:"sum" },
-    { headerName: 'PL CAPEX (MM$)', field: 'plan_capex', chartDataType: "series", aggFunc:"sum" },
-    { headerName: 'ACT CAPEX (MM$)', field: 'actual_capex', chartDataType: "series", aggFunc:"sum" },
-    { headerName: 'PL OPEX (MM$)', field: 'plan_opex', chartDataType: "series" , aggFunc:"sum"},
-    { headerName: 'ACT OPEX (MM$)', field: 'actual_opex', chartDataType: "series" , aggFunc:"sum"},
-    { headerName: 'PL CAFLOW (MM$)',field: 'plan_cashflow', chartDataType: "series", aggFunc:"sum" },
-    { headerName: 'ACT CAFLOW (MM$)', field: 'actual_cashflow', chartDataType: "series", aggFunc:"sum"}, 
+    { headerName: 'PL NGL (BBL/D)', field: 'plan_ngl', chartDataType: "series" },
+    { headerName: 'ACT NGL (BBL/D)', field: 'actual_ngl', chartDataType: "series" },
+    { headerName: 'PL CUMNGL (MMBBL)', field: 'plan_cumngl', chartDataType: "series"},
+    { headerName: 'ACT CUMNGL (MMBBL)', field: 'actual_cumngl', chartDataType: "series" },
+    { headerName: 'PL CAPEX (MM$)', field: 'plan_ngl_capex', chartDataType: "series" },
+    { headerName: 'ACT CAPEX (MM$)', field: 'actual_ngl_capex', chartDataType: "series"},
+    { headerName: 'PL OPEX (MM$)', field: 'plan_ngl_opex', chartDataType: "series" },
+    { headerName: 'ACT OPEX (MM$)', field: 'actual_ngl_opex', chartDataType: "series"},
+    { headerName: 'PL CAFLOW (MM$)',field: 'plan_ngl_cashflow', chartDataType: "series"},
+    { headerName: 'ACT CAFLOW (MM$)', field: 'actual_ngl_casflow', chartDataType: "series"}, 
     
-    { headerName: 'PL ST NGL (BBL/D)', field: 'plan_oil', chartDataType: "series" },
-    { headerName: 'ACT ST NGL (BBL/D)', field: 'actual_oil', chartDataType: "series" },
-    { headerName: 'PL ST CUMNGL (MMBBL)', field: 'plan_cumoil', chartDataType: "series",aggFunc:"sum"},
-    { headerName: 'ACT ST CUMNGL (MMBBL)', field: 'actual_cumoil', chartDataType: "series", aggFunc:"sum" },
-    { headerName: 'PL ST CAPEX (MM$)', field: 'plan_capex', chartDataType: "series", aggFunc:"sum" },
-    { headerName: 'ACT ST CAPEX (MM$)', field: 'actual_capex', chartDataType: "series", aggFunc:"sum" },
-    { headerName: 'PL ST OPEX (MM$)', field: 'plan_opex', chartDataType: "series" , aggFunc:"sum"},
-    { headerName: 'ACT ST OPEX (MM$)', field: 'actual_opex', chartDataType: "series" , aggFunc:"sum"},
-    { headerName: 'PL ST CAFLOW (MM$)',field: 'plan_cashflow', chartDataType: "series", aggFunc:"sum" },
-    { headerName: 'ACT ST CAFLOW (MM$)', field: 'actual_cashflow', chartDataType: "series", aggFunc:"sum"},   
+    { headerName: 'PL ST NGL (BBL/D)', field: 'plan_st_ngl', chartDataType: "series", hide:true },
+    { headerName: 'ACT ST NGL (BBL/D)', field: 'actual_st_ngl', chartDataType: "series", hide:true },
+    { headerName: 'PL ST CUMNGL (MMBBL)', field: 'plan_st_cumngl', chartDataType: "series",aggFunc:"sum", hide:true},
+    { headerName: 'ACT ST CUMNGL (MMBBL)', field: 'actual_st_cumngl', chartDataType: "series", aggFunc:"sum", hide:true },
+    { headerName: 'PL ST CAPEX (MM$)', field: 'plan_st_ngl_capex', chartDataType: "series", aggFunc:"sum", hide:true },
+    { headerName: 'ACT ST CAPEX (MM$)', field: 'actual_st_ngl_capex', chartDataType: "series", aggFunc:"sum", hide:true },
+    { headerName: 'PL ST OPEX (MM$)', field: 'plan_st-ngl_opex', chartDataType: "series" , aggFunc:"sum", hide:true},
+    { headerName: 'ACT ST OPEX (MM$)', field: 'actual_st_ngl_opex', chartDataType: "series" , aggFunc:"sum", hide:true},
+    { headerName: 'PL ST CAFLOW (MM$)',field: 'plan_st_ngl_cashflow', chartDataType: "series", aggFunc:"sum", hide:true },
+    { headerName: 'ACT ST CAFLOW (MM$)', field: 'actual_st_ngl_cashflow', chartDataType: "series", aggFunc:"sum", hide:true},   
 ];
 
 
@@ -163,7 +163,7 @@ onFirstDataRendered(event) {
       cellRange: {
         rowStartIndex: 0,
         rowEndIndex: 11,
-        columns: ['month', 'plan_cumoil', 'actual_cumoil', 'plan_cashflow', 'actual_cashflow'],
+        columns: ['month', 'plan_cumngl', 'actual_cumngl', 'plan_ngl_cashflow', 'actual_ngl_cashflow'],
       },
       chartType: 'groupedColumn',
       chartContainer: eContainer1,
@@ -196,7 +196,7 @@ onFirstDataRendered(event) {
     var eContainer2 = document.querySelector('#chart2');
     var params2 = {
       cellRange: {
-        columns: ['month', 'plan_cashflow', 'actual_cashflow'],
+        columns: ['month', 'plan_ngl_cashflow', 'actual_ngl_cashflow'],
       },
       chartType: 'line',
       chartContainer: eContainer2,
@@ -237,7 +237,7 @@ onFirstDataRendered(event) {
     var eContainer3 = document.querySelector('#chart3');
     var params3 = {
       cellRange: {
-        columns: ['month', 'plan_oil', 'actual_oil',],
+        columns: ['month', 'plan_ngl', 'actual_ngl',],
       },
       chartType: 'line',
       chartContainer: eContainer3,
@@ -304,7 +304,7 @@ onColumnResized(params) {
 
     this.http
       .get('http://localhost:8080/api/kpis')
-      //.get('./assets/data/kpi/mockdata/mock-work.json')
+     // .post('http://localhost:8080/api/kpis')
       .subscribe(data => {
       this.rowData = data ;
       this.well = [];

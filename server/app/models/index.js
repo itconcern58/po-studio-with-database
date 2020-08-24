@@ -8,5 +8,7 @@ db.mongoose = mongoose;
 db.url = dbConfig.url;
 db.kpis = require("./kpi.model.js")(mongoose);
 db.st_kpis = require("./st_kpi.model.js")(mongoose);
+db.prd = require("./oil_prd.model.js")(mongoose);
+//db.prd = require("./oil_fore.model.js")(mongoose);
 
 module.exports = db;

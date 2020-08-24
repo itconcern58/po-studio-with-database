@@ -7,15 +7,16 @@
 
 .button-vwr-main {
     margin-left: 2.5px;
-    font-size: 10px;
-    width: 14.5vw;
+    font-size: 15px;
+    width: 15.5vw;
     border-color: floralwhite;
     border: 2px solid
 }
 
-.vwr-image {    
+.vwr-image {      
     display: block;
+    margin-top: 15%;
     margin-left: auto;
     margin-right: auto;
-    width: 18%;
+    width: 10%;
 }
